@@ -30,17 +30,15 @@ jobs:
 
     steps:
       - name: Deploy
-        # uses: appleboy/ssh-action@v1
-        run: |
-          echo ${{ secrets.SSH_KEY }}
-        # with:
-        #   host: ${{ secrets.SERVER_IP }}
-        #   username: ${{ secrets.SERVER_USER }}
-        #   port: ${{ secrets.SERVER_PORT }}
-        #   key: ${{ secrets.SSH_KEY }}
-        #   script: | 
-        #     cd flask-ci-cd
-        #     git pull origin main
-        #     pip install -r requirements.txt --break-system-packages
-        #     pkill gunicorn ||  true
-        #     nohup gunicorn -w 2 -b 0.0.0.0:5000 app:app &
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: | 
+            cd flask-ci-cd
+            git pull origin main
+            pip install -r requirements.txt --break-system-packages
+            pkill gunicorn ||  true
+            nohup gunicorn -w 2 -b 0.0.0.0:5000 app:app &
